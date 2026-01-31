@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f5f5f7;
+  --foreground: #1a1a2e;
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --success: #22c55e;
+  --error: #ef4444;
+  --card-bg: #ffffff;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-3xl shadow-lg p-6;
+    box-shadow: var(--card-shadow);
+  }
+
+  .btn-primary {
+    @apply bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-4 px-8 rounded-2xl transition-all duration-200;
+  }
+
+  .btn-primary:active {
+    @apply scale-95;
+  }
+
+  .input-field {
+    @apply w-full border-2 border-gray-200 rounded-xl py-4 px-6 text-center text-lg font-medium focus:border-indigo-500 focus:outline-none transition-colors;
+  }
+
+  .category-card {
+    @apply bg-white rounded-2xl p-4 flex items-center gap-4 cursor-pointer transition-all duration-200 hover:shadow-lg;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .category-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .category-card.selected {
+    @apply ring-2 ring-orange-400 ring-offset-2;
+  }
+
+  .icon-box {
+    @apply w-16 h-16 rounded-xl flex items-center justify-center text-2xl font-bold;
+  }
+
+  .game-item {
+    @apply w-16 h-16 md:w-20 md:h-20 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-150 select-none;
+  }
+
+  .game-item:hover {
+    @apply scale-105;
+  }
+
+  .game-item:active {
+    @apply scale-95;
+  }
+
+  .game-item.found {
+    @apply bg-green-100 ring-2 ring-green-500;
+  }
+
+  .stat-box {
+    @apply bg-gray-50 rounded-xl p-4 text-center;
+  }
+
+  .stat-label {
+    @apply text-xs font-medium text-gray-400 uppercase tracking-wider mb-1;
+  }
+
+  .stat-value {
+    @apply text-lg font-bold text-gray-800;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}

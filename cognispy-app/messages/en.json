@@ -1,0 +1,69 @@
+{
+  "app": {
+    "title": "CogniSpy",
+    "tagline": "Memory & Thinking Activities"
+  },
+  "welcome": {
+    "greeting": "Hello!",
+    "placeholder": "Enter your name",
+    "button": "Let's Play",
+    "switchUser": "Switch"
+  },
+  "categories": {
+    "title": "Choose an Activity",
+    "numbers": {
+      "name": "Numbers",
+      "description": "Scan for matching digits."
+    },
+    "weather": {
+      "name": "Spy Weather",
+      "description": "Spot symbols in the clouds."
+    },
+    "house": {
+      "name": "Where my House?",
+      "description": "Find the matching little house."
+    },
+    "transport": {
+      "name": "I Spy Transport",
+      "description": "Identify vehicles on the move."
+    }
+  },
+  "game": {
+    "target": "TARGET",
+    "found": "FOUND",
+    "activity": "ACTIVITY",
+    "stage": "STAGE",
+    "back": "BACK",
+    "start": "Start Game",
+    "nextStage": "Next Stage",
+    "chooseAnother": "Choose Different Game",
+    "excellent": "Excellent!",
+    "wellDone": "Well done!",
+    "greatJob": "Great job!",
+    "keepGoing": "Keep going!",
+    "almostThere": "Almost there!"
+  },
+  "encouragements": [
+    "You're doing great! Keep it up.",
+    "Fantastic! Your visual scanning is sharp.",
+    "Wonderful progress! You're a natural.",
+    "Excellent work! Keep those eyes scanning.",
+    "Great job! Your focus is impressive."
+  ],
+  "stages": {
+    "numbers": {
+      "1": "Beginner Scan",
+      "2": "Mid-Range Focus",
+      "3": "Complex Search"
+    },
+    "weather": {
+      "1": "Umbrella Hunt",
+      "2": "Lightning Bolt",
+      "3": "Cloud Spotting",
+      "4": "Raindrop Search",
+      "5": "Rainbow Quest"
+    },
+    "house": "House Stage",
+    "transport": "Transport Stage"
+  }
+}
