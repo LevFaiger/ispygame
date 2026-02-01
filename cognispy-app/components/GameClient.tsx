@@ -47,6 +47,71 @@ export default function GameClient() {
       const circle = prev.circles.find(c => c.id === id);
       if (!circle || circle.isFound || !prev.isGameActive) return prev;
 
+      // For numbers game: only accept clicks on the current target number
+      if (prev.gameType === 'numbers') {
+        const currentTarget = prev.targetSequence[prev.currentTargetIndex];
+
+        if (circle.value === currentTarget) {
+          if (soundEnabled) playCorrectSound();
+
+          const newCircles = prev.circles.map(c =>
+            c.id === id ? { ...c, isFound: true } : c
+          );
+
+          // Count how many of current target are now found
+          const currentTargetFound = newCircles.filter(
+            c => c.value === currentTarget && c.isFound
+          ).length;
+          const currentTargetTotal = newCircles.filter(
+            c => c.value === currentTarget
+          ).length;
+
+          // Check if all of current target number are found
+          if (currentTargetFound >= currentTargetTotal) {
+            const nextTargetIndex = prev.currentTargetIndex + 1;
+
+            // Check if all numbers in sequence are done
+            if (nextTargetIndex >= prev.targetSequence.length) {
+              if (soundEnabled) setTimeout(playSuccessSound, 200);
+              setShowCompletion(true);
+              return {
+                ...prev,
+                circles: newCircles,
+                foundCount: prev.foundCount + 1,
+                score: prev.score + 10,
+                isGameActive: false,
+                endTime: Date.now(),
+              };
+            }
+
+            // Move to next target number
+            return {
+              ...prev,
+              circles: newCircles,
+              foundCount: prev.foundCount + 1,
+              score: prev.score + 10,
+              currentTargetIndex: nextTargetIndex,
+              targetValue: prev.targetSequence[nextTargetIndex],
+            };
+          }
+
+          return {
+            ...prev,
+            circles: newCircles,
+            foundCount: prev.foundCount + 1,
+            score: prev.score + 10,
+          };
+        } else {
+          // Wrong number clicked
+          if (soundEnabled) playWrongSound();
+          return {
+            ...prev,
+            score: Math.max(0, prev.score - 5),
+          };
+        }
+      }
+
+      // For other games: original logic
       if (circle.isTarget) {
         if (soundEnabled) playCorrectSound();
 
@@ -138,7 +203,17 @@ export default function GameClient() {
           <div className="stat-box">
             <div className="stat-label">{t('game.found')}</div>
             <div className="stat-value text-indigo-600">
-              {gameState.foundCount} / {gameState.totalTargetCount}
+              {gameType === 'numbers' ? (
+                // For numbers: show found/total for current target number
+                (() => {
+                  const currentTarget = gameState.targetSequence[gameState.currentTargetIndex];
+                  const found = gameState.circles.filter(c => c.value === currentTarget && c.isFound).length;
+                  const total = gameState.circles.filter(c => c.value === currentTarget).length;
+                  return `${found} / ${total}`;
+                })()
+              ) : (
+                `${gameState.foundCount} / ${gameState.totalTargetCount}`
+              )}
             </div>
           </div>
           <div className="stat-box">

@@ -50,6 +50,9 @@ export interface GameState {
   foundCount: number;
   totalTargetCount: number;
   targetValue: number | string | HouseConfig | TransportType | null;
+  // For numbers game: sequential targets [1, 2, 3]
+  targetSequence: number[];
+  currentTargetIndex: number;
 }
 
 // User preferences stored in localStorage

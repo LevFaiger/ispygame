@@ -19,20 +19,17 @@ function isTransportType(value: unknown): value is TransportType {
 
 export default function CircleButton({ item, onClick }: CircleButtonProps) {
   const { value, isFound, x, y, rotation, zIndex } = item;
+  const isNumber = typeof value === 'number';
+
+  // For numbers game: hide completely when found
+  if (isNumber && isFound) {
+    return null;
+  }
 
   const renderContent = () => {
-    if (typeof value === 'number') {
+    if (isNumber) {
       return (
         <span className="text-2xl md:text-3xl font-bold text-gray-700">
-          {value}
-        </span>
-      );
-    }
-
-    if (typeof value === 'string') {
-      // Emoji for weather game
-      return (
-        <span className="text-2xl md:text-3xl">
           {value}
         </span>
       );
@@ -44,6 +41,15 @@ export default function CircleButton({ item, onClick }: CircleButtonProps) {
 
     if (isTransportType(value)) {
       return <TransportIcon type={value} size={40} />;
+    }
+
+    if (typeof value === 'string') {
+      // Emoji for weather game
+      return (
+        <span className="text-2xl md:text-3xl">
+          {value}
+        </span>
+      );
     }
 
     return null;

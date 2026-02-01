@@ -24,6 +24,8 @@ export function createInitialGameState(): GameState {
     foundCount: 0,
     totalTargetCount: 0,
     targetValue: null,
+    targetSequence: [],
+    currentTargetIndex: 0,
   };
 }
 
@@ -32,46 +34,61 @@ export function initNumbersGame(stage: number): Partial<GameState> {
   const level = LEVELS[levelIndex];
   const circles: CircleItem[] = [];
 
-  const cols = 8;
-  const rows = 10;
-  const targetCount = level.gridSize;
+  // Grid with staggered layout
+  const cols = 6;
+  const rows = 5 + Math.floor(stage / 2);
+  const targetNumbers = level.targets; // e.g., [1, 2, 3]
 
-  const targetNumbers = level.targets;
-  let targetsPlaced = 0;
-  const targetGoal = Math.floor(targetCount * 0.3);
+  // Generate grid positions (no overlap, staggered)
+  const positions = generateGridPositions(cols, rows, 8, 3);
+  const totalItems = Math.min(positions.length, 25 + stage * 3);
 
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const cellWidth = 100 / cols;
-      const cellHeight = 100 / rows;
+  // Ensure we have enough of each target number
+  const targetsPerNumber = 3 + stage; // How many of each target number (1, 2, 3)
+  const targetCounts: Record<number, number> = {};
+  targetNumbers.forEach(n => targetCounts[n] = 0);
 
-      const isTarget = targetsPlaced < targetGoal && Math.random() < 0.4;
-      const value = isTarget
-        ? targetNumbers[Math.floor(Math.random() * targetNumbers.length)]
-        : Math.floor(Math.random() * 10);
+  for (let i = 0; i < totalItems; i++) {
+    const pos = positions[i];
+    let value: number;
+    let isTarget = false;
 
-      if (isTarget) targetsPlaced++;
-
-      circles.push({
-        id: generateUniqueId(),
-        value,
-        isTarget,
-        isFound: false,
-        x: col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * 5,
-        y: row * cellHeight + cellHeight / 2 + (Math.random() - 0.5) * 5,
-        rotation: (Math.random() - 0.5) * 10,
-        zIndex: Math.floor(Math.random() * 10),
-      });
+    // Try to place target numbers evenly
+    const unfilledTarget = targetNumbers.find(n => targetCounts[n] < targetsPerNumber);
+    if (unfilledTarget !== undefined && Math.random() < 0.5) {
+      value = unfilledTarget;
+      targetCounts[value]++;
+      isTarget = true;
+    } else {
+      // Place a non-target number (0, 4-9)
+      const nonTargets = [0, 4, 5, 6, 7, 8, 9];
+      value = nonTargets[Math.floor(Math.random() * nonTargets.length)];
     }
+
+    circles.push({
+      id: generateUniqueId(),
+      value,
+      isTarget,
+      isFound: false,
+      x: pos.x,
+      y: pos.y,
+      rotation: (Math.random() - 0.5) * 12,
+      zIndex: 1,
+    });
   }
+
+  // Count total targets (all 1s, 2s, and 3s)
+  const totalTargetCount = circles.filter(c => c.isTarget).length;
 
   return {
     gameType: 'numbers',
     currentStage: stage,
     circles,
     foundCount: 0,
-    totalTargetCount: circles.filter(c => c.isTarget).length,
-    targetValue: targetNumbers[0],
+    totalTargetCount,
+    targetValue: targetNumbers[0], // Start with first target (1)
+    targetSequence: targetNumbers as number[],
+    currentTargetIndex: 0,
     isGameActive: true,
     startTime: Date.now(),
     score: 0,
@@ -83,34 +100,29 @@ export function initWeatherGame(stage: number): Partial<GameState> {
   const targetSymbol = WEATHER_STAGES[stageIndex].symbol;
   const circles: CircleItem[] = [];
 
-  const cols = 8;
-  const rows = 9;
-  const targetCount = 6 + stage * 2;
+  // Grid size increases with stage
+  const cols = 5;
+  const rows = 4 + Math.floor(stage / 3);
+  const targetCount = 5 + stage;
 
-  for (let i = 0; i < targetCount; i++) {
+  // Generate grid positions (no overlap guaranteed)
+  const positions = generateGridPositions(cols, rows, 10, 4);
+  const totalItems = Math.min(positions.length, 20 + stage * 2);
+
+  for (let i = 0; i < totalItems; i++) {
+    const isTarget = i < targetCount;
+    const value = isTarget ? targetSymbol : getRandomDistractorEmoji(targetSymbol);
+    const pos = positions[i];
+
     circles.push({
       id: generateUniqueId(),
-      value: targetSymbol,
-      isTarget: true,
+      value,
+      isTarget,
       isFound: false,
-      x: Math.random() * 90 + 5,
-      y: Math.random() * 90 + 5,
-      rotation: (Math.random() - 0.5) * 20,
-      zIndex: Math.floor(Math.random() * 20),
-    });
-  }
-
-  const distractorCount = cols * rows - targetCount;
-  for (let i = 0; i < distractorCount; i++) {
-    circles.push({
-      id: generateUniqueId(),
-      value: getRandomDistractorEmoji(targetSymbol),
-      isTarget: false,
-      isFound: false,
-      x: Math.random() * 90 + 5,
-      y: Math.random() * 90 + 5,
-      rotation: (Math.random() - 0.5) * 20,
-      zIndex: Math.floor(Math.random() * 20),
+      x: pos.x,
+      y: pos.y,
+      rotation: (Math.random() - 0.5) * 15,
+      zIndex: 1,
     });
   }
 
@@ -128,59 +140,42 @@ export function initWeatherGame(stage: number): Partial<GameState> {
 }
 
 export function initHouseGame(stage: number): Partial<GameState> {
-  const cols = 6 + Math.floor(stage / 2);
-  const rows = 4 + Math.ceil(stage / 2);
-  const targetCount = Math.max(rows, 4 + stage);
+  // Grid with staggered layout
+  const cols = 5;
+  const rows = 4 + Math.floor(stage / 3);
+  const targetCount = 4 + stage;
 
   const targetConfig = generateRandomHouseConfig();
   const circles: CircleItem[] = [];
 
-  for (let i = 0; i < targetCount; i++) {
-    const cellWidth = 100 / cols;
-    const cellHeight = 100 / rows;
-    const col = i % cols;
-    const row = Math.floor(i / cols);
+  // Generate grid positions (no overlap, staggered)
+  const positions = generateGridPositions(cols, rows, 10, 3);
+  const totalItems = Math.min(positions.length, 18 + stage * 2);
+
+  for (let i = 0; i < totalItems; i++) {
+    const isTarget = i < targetCount;
+    let value: HouseConfig;
+
+    if (isTarget) {
+      value = targetConfig;
+    } else {
+      do {
+        value = generateRandomHouseConfig();
+      } while (houseConfigsMatch(value, targetConfig));
+    }
+
+    const pos = positions[i];
 
     circles.push({
       id: generateUniqueId(),
-      value: targetConfig,
-      isTarget: true,
+      value,
+      isTarget,
       isFound: false,
-      x: col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * 8,
-      y: row * cellHeight + cellHeight / 2 + (Math.random() - 0.5) * 8,
+      x: pos.x,
+      y: pos.y,
       rotation: 0,
-      zIndex: Math.floor(Math.random() * 10),
+      zIndex: 1,
     });
-  }
-
-  const totalCells = cols * rows;
-  for (let i = targetCount; i < totalCells; i++) {
-    let distractorConfig: HouseConfig;
-    do {
-      distractorConfig = generateRandomHouseConfig();
-    } while (houseConfigsMatch(distractorConfig, targetConfig));
-
-    const cellWidth = 100 / cols;
-    const cellHeight = 100 / rows;
-    const col = i % cols;
-    const row = Math.floor(i / cols);
-
-    circles.push({
-      id: generateUniqueId(),
-      value: distractorConfig,
-      isTarget: false,
-      isFound: false,
-      x: col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * 8,
-      y: row * cellHeight + cellHeight / 2 + (Math.random() - 0.5) * 8,
-      rotation: 0,
-      zIndex: Math.floor(Math.random() * 10),
-    });
-  }
-
-  // Shuffle circles
-  for (let i = circles.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [circles[i], circles[j]] = [circles[j], circles[i]];
   }
 
   return {
@@ -196,42 +191,73 @@ export function initHouseGame(stage: number): Partial<GameState> {
   };
 }
 
+// Generate grid positions with staggered rows and slight randomization
+function generateGridPositions(
+  cols: number,
+  rows: number,
+  padding: number = 8,
+  jitter: number = 3
+): { x: number; y: number }[] {
+  const positions: { x: number; y: number }[] = [];
+
+  const cellWidth = (100 - padding * 2) / cols;
+  const cellHeight = (100 - padding * 2) / rows;
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      // Stagger: offset odd columns by half cell height
+      const staggerOffset = col % 2 === 1 ? cellHeight * 0.4 : 0;
+
+      // Center of each cell with stagger and slight random offset
+      const x = padding + col * cellWidth + cellWidth / 2 + (Math.random() - 0.5) * jitter;
+      const y = padding + row * cellHeight + cellHeight / 2 + staggerOffset + (Math.random() - 0.5) * jitter;
+
+      // Only add if within bounds
+      if (y < 100 - padding) {
+        positions.push({ x, y });
+      }
+    }
+  }
+
+  // Shuffle positions
+  for (let i = positions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [positions[i], positions[j]] = [positions[j], positions[i]];
+  }
+
+  return positions;
+}
+
 export function initTransportGame(stage: number): Partial<GameState> {
-  const cols = 6 + Math.floor(stage / 2);
-  const rows = 4 + Math.ceil(stage / 2);
-  const targetCount = Math.max(rows, 5 + stage);
+  // Grid size increases with stage
+  const cols = 5;
+  const rows = 4 + Math.floor(stage / 3);
+  const targetCount = 5 + stage;
 
   const targetType = TRANSPORT_TYPES[Math.floor(Math.random() * TRANSPORT_TYPES.length)];
   const circles: CircleItem[] = [];
-
-  for (let i = 0; i < targetCount; i++) {
-    circles.push({
-      id: generateUniqueId(),
-      value: targetType,
-      isTarget: true,
-      isFound: false,
-      x: Math.random() * 85 + 7.5,
-      y: Math.random() * 85 + 7.5,
-      rotation: (Math.random() - 0.5) * 30 * (stage / 5),
-      zIndex: Math.floor(Math.random() * 20),
-    });
-  }
-
-  const totalCells = cols * rows;
   const distractorTypes = TRANSPORT_TYPES.filter(t => t !== targetType);
 
-  for (let i = targetCount; i < totalCells; i++) {
-    const distractorType = distractorTypes[Math.floor(Math.random() * distractorTypes.length)];
+  // Generate grid positions (no overlap guaranteed)
+  const positions = generateGridPositions(cols, rows, 10, 4);
+  const totalItems = Math.min(positions.length, 18 + stage * 2);
+
+  for (let i = 0; i < totalItems; i++) {
+    const isTarget = i < targetCount;
+    const value = isTarget
+      ? targetType
+      : distractorTypes[Math.floor(Math.random() * distractorTypes.length)];
+    const pos = positions[i];
 
     circles.push({
       id: generateUniqueId(),
-      value: distractorType,
-      isTarget: false,
+      value,
+      isTarget,
       isFound: false,
-      x: Math.random() * 85 + 7.5,
-      y: Math.random() * 85 + 7.5,
-      rotation: (Math.random() - 0.5) * 30 * (stage / 5),
-      zIndex: Math.floor(Math.random() * 20),
+      x: pos.x,
+      y: pos.y,
+      rotation: (Math.random() - 0.5) * 15,
+      zIndex: 1,
     });
   }
 
