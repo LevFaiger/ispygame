@@ -37,7 +37,7 @@ export function initNumbersGame(stage: number): Partial<GameState> {
   // Grid with staggered layout
   const cols = 6;
   const rows = 5 + Math.floor(stage / 2);
-  const targetNumbers = level.targets; // e.g., [1, 2, 3]
+  const targetNumbers = level.targets as number[]; // e.g., [1, 2, 3]
 
   // Generate grid positions (no overlap, staggered)
   const positions = generateGridPositions(cols, rows, 8, 3);
@@ -46,7 +46,7 @@ export function initNumbersGame(stage: number): Partial<GameState> {
   // Ensure we have enough of each target number
   const targetsPerNumber = 3 + stage; // How many of each target number (1, 2, 3)
   const targetCounts: Record<number, number> = {};
-  targetNumbers.forEach(n => targetCounts[n] = 0);
+  targetNumbers.forEach(n => { targetCounts[n] = 0; });
 
   for (let i = 0; i < totalItems; i++) {
     const pos = positions[i];

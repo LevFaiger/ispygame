@@ -197,7 +197,6 @@ export default function GameClient() {
             <TargetDisplay
               gameType={gameType}
               targetValue={gameState.targetValue}
-              stage={gameState.currentStage}
             />
           </div>
           <div className="stat-box">

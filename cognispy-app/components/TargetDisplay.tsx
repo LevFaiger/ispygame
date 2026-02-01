@@ -7,7 +7,6 @@ import TransportIcon from './TransportIcon';
 interface TargetDisplayProps {
   gameType: GameType;
   targetValue: number | string | HouseConfig | TransportType | null;
-  stage: number;
 }
 
 function isHouseConfig(value: unknown): value is HouseConfig {
@@ -18,9 +17,9 @@ function isTransportType(value: unknown): value is TransportType {
   return typeof value === 'string' && ['car', 'bus', 'plane', 'bike', 'train', 'boat'].includes(value);
 }
 
-export default function TargetDisplay({ gameType, targetValue, stage }: TargetDisplayProps) {
+export default function TargetDisplay({ gameType, targetValue }: TargetDisplayProps) {
   const renderTarget = () => {
-    if (gameType === 'numbers') {
+    if (gameType === 'numbers' && typeof targetValue === 'number') {
       // Show only the current target number
       return (
         <span className="text-3xl font-bold text-indigo-600">
