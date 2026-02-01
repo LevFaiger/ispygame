@@ -1,0 +1,13 @@
+name: cognispy
+region: nyc
+static_sites:
+  - name: web
+    github:
+      repo: LevFaiger/ispygame
+      branch: main
+      deploy_on_push: true
+    source_dir: cognispy-app
+    build_command: npm install && npm run build
+    output_dir: out
+    routes:
+      - path: /
