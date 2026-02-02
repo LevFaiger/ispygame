@@ -4,10 +4,12 @@ import {
   WEATHER_STAGES,
   TRANSPORT_TYPES,
   EMOTION_STAGES,
+  FRUIT_STAGES,
   generateRandomHouseConfig,
   houseConfigsMatch,
   getRandomDistractorEmoji,
   getRandomEmotionDistractor,
+  getRandomFruitDistractor,
 } from './constants';
 
 function generateUniqueId(): string {
@@ -320,6 +322,50 @@ export function initEmotionGame(stage: number): Partial<GameState> {
   };
 }
 
+export function initFruitsGame(stage: number): Partial<GameState> {
+  const stageIndex = Math.min(stage - 1, FRUIT_STAGES.length - 1);
+  const targetSymbol = FRUIT_STAGES[stageIndex].symbol;
+  const circles: CircleItem[] = [];
+
+  // Grid with staggered layout
+  const cols = 5;
+  const rows = 4 + Math.floor(stage / 3);
+  const targetCount = 5 + stage;
+
+  // Generate grid positions (no overlap, staggered)
+  const positions = generateGridPositions(cols, rows, 10, 4);
+  const totalItems = Math.min(positions.length, 20 + stage * 2);
+
+  for (let i = 0; i < totalItems; i++) {
+    const isTarget = i < targetCount;
+    const value = isTarget ? targetSymbol : getRandomFruitDistractor(targetSymbol);
+    const pos = positions[i];
+
+    circles.push({
+      id: generateUniqueId(),
+      value,
+      isTarget,
+      isFound: false,
+      x: pos.x,
+      y: pos.y,
+      rotation: (Math.random() - 0.5) * 15,
+      zIndex: 1,
+    });
+  }
+
+  return {
+    gameType: 'fruits',
+    currentStage: stage,
+    circles,
+    foundCount: 0,
+    totalTargetCount: targetCount,
+    targetValue: targetSymbol,
+    isGameActive: true,
+    startTime: Date.now(),
+    score: 0,
+  };
+}
+
 export function initGame(type: GameType, stage: number): Partial<GameState> {
   switch (type) {
     case 'numbers':
@@ -332,6 +378,8 @@ export function initGame(type: GameType, stage: number): Partial<GameState> {
       return initTransportGame(stage);
     case 'emotion':
       return initEmotionGame(stage);
+    case 'fruits':
+      return initFruitsGame(stage);
     default:
       return createInitialGameState();
   }

@@ -2,7 +2,7 @@ import { locales } from '@/i18n/config';
 import { setRequestLocale } from 'next-intl/server';
 import GameClient from '@/components/GameClient';
 
-const gameTypes = ['numbers', 'weather', 'house', 'transport', 'emotion'];
+const gameTypes = ['numbers', 'weather', 'house', 'transport', 'emotion', 'fruits'];
 
 export function generateStaticParams() {
   const params: { locale: string; type: string }[] = [];

@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import CategoryCard from '@/components/CategoryCard';
 import { GameType } from '@/types';
 
-const gameTypes: GameType[] = ['numbers', 'weather', 'house', 'transport', 'emotion'];
+const gameTypes: GameType[] = ['numbers', 'weather', 'house', 'transport', 'emotion', 'fruits'];
 
 export default function CategoriesClient() {
   const t = useTranslations();

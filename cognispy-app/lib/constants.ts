@@ -51,6 +51,30 @@ export function getRandomEmotionDistractor(exclude: string): string {
   return available[Math.floor(Math.random() * available.length)];
 }
 
+// Fruits for the fruits game
+export const FRUIT_STAGES = [
+  { symbol: '🍎', name: 'Apple' },
+  { symbol: '🍐', name: 'Pear' },
+  { symbol: '🍒', name: 'Cherry' },
+  { symbol: '🍓', name: 'Strawberry' },
+  { symbol: '🍊', name: 'Orange' },
+  { symbol: '🍋', name: 'Lemon' },
+  { symbol: '🍌', name: 'Banana' },
+  { symbol: '🍇', name: 'Grapes' },
+  { symbol: '🍉', name: 'Watermelon' },
+  { symbol: '🍑', name: 'Peach' },
+];
+
+export const FRUIT_DISTRACTORS = [
+  '🍎', '🍐', '🍒', '🍓', '🍊', '🍋', '🍌', '🍇', '🍉', '🍑',
+  '🥝', '🍍', '🥭', '🫐', '🥥', '🍈', '🍏', '🥑', '🫒', '🍅',
+];
+
+export function getRandomFruitDistractor(exclude: string): string {
+  const available = FRUIT_DISTRACTORS.filter(e => e !== exclude);
+  return available[Math.floor(Math.random() * available.length)];
+}
+
 export const HOUSE_DOORS: HouseConfig['door'][] = ['left', 'center', 'right', 'none'];
 export const HOUSE_WINDOWS: HouseConfig['windows'][] = ['single', 'double', 'wide', 'split'];
 

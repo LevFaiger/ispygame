@@ -1,5 +1,5 @@
 // Game types
-export type GameType = 'numbers' | 'weather' | 'house' | 'transport' | 'emotion';
+export type GameType = 'numbers' | 'weather' | 'house' | 'transport' | 'emotion' | 'fruits';
 
 // Transport vehicle types
 export type TransportType = 'car' | 'bus' | 'plane' | 'bike' | 'train' | 'boat';

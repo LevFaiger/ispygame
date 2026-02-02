@@ -51,6 +51,11 @@ const categoryIcons: Record<GameType, { icon: React.ReactNode; bgColor: string; 
     bgColor: 'bg-yellow-100',
     textColor: 'text-yellow-600',
   },
+  fruits: {
+    icon: <span className="text-2xl">🍎</span>,
+    bgColor: 'bg-red-100',
+    textColor: 'text-red-600',
+  },
 };
 
 export default function CategoryCard({ type, name, description, selected, onClick }: CategoryCardProps) {

@@ -30,6 +30,10 @@
     "emotion": {
       "name": "Emotion Faces",
       "description": "Find the matching emoji faces."
+    },
+    "fruits": {
+      "name": "Fruit Garden",
+      "description": "Find the matching fruits."
     }
   },
   "game": {
@@ -69,6 +73,7 @@
     },
     "house": "House Stage",
     "transport": "Transport Stage",
-    "emotion": "Emotion Stage"
+    "emotion": "Emotion Stage",
+    "fruits": "Fruit Stage"
   }
 }
