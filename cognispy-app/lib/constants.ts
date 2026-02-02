@@ -25,6 +25,32 @@ export const DISTRACTOR_EMOJIS = [
 
 export const TRANSPORT_TYPES: TransportType[] = ['car', 'bus', 'plane', 'bike', 'train', 'boat'];
 
+// Emotion faces for the emotion game
+export const EMOTION_STAGES = [
+  { symbol: '😊', name: 'Happy' },
+  { symbol: '😢', name: 'Sad' },
+  { symbol: '😠', name: 'Angry' },
+  { symbol: '😮', name: 'Surprised' },
+  { symbol: '😜', name: 'Winking' },
+  { symbol: '🤓', name: 'Nerd' },
+  { symbol: '😎', name: 'Cool' },
+  { symbol: '🥰', name: 'Love' },
+  { symbol: '😴', name: 'Sleepy' },
+  { symbol: '🤔', name: 'Thinking' },
+];
+
+export const EMOTION_DISTRACTORS = [
+  '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃',
+  '😉', '😋', '😛', '😝', '🤪', '🤨', '🧐', '🤩', '🥳', '😏',
+  '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫',
+  '😩', '🥺', '😤', '😡', '🤬', '😈', '👿', '💀', '😺', '😸',
+];
+
+export function getRandomEmotionDistractor(exclude: string): string {
+  const available = EMOTION_DISTRACTORS.filter(e => e !== exclude);
+  return available[Math.floor(Math.random() * available.length)];
+}
+
 export const HOUSE_DOORS: HouseConfig['door'][] = ['left', 'center', 'right', 'none'];
 export const HOUSE_WINDOWS: HouseConfig['windows'][] = ['single', 'double', 'wide', 'split'];
 

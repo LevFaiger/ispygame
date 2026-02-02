@@ -26,6 +26,10 @@
     "transport": {
       "name": "I Spy Transport",
       "description": "Identify vehicles on the move."
+    },
+    "emotion": {
+      "name": "Emotion Faces",
+      "description": "Find the matching emoji faces."
     }
   },
   "game": {
@@ -64,6 +68,7 @@
       "5": "Rainbow Quest"
     },
     "house": "House Stage",
-    "transport": "Transport Stage"
+    "transport": "Transport Stage",
+    "emotion": "Emotion Stage"
   }
 }
