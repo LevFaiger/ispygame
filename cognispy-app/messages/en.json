@@ -34,6 +34,10 @@
     "fruits": {
       "name": "Fruit Garden",
       "description": "Find the matching fruits."
+    },
+    "winter": {
+      "name": "Winter Clothes",
+      "description": "Find the matching winter items."
     }
   },
   "game": {
@@ -74,6 +78,7 @@
     "house": "House Stage",
     "transport": "Transport Stage",
     "emotion": "Emotion Stage",
-    "fruits": "Fruit Stage"
+    "fruits": "Fruit Stage",
+    "winter": "Winter Stage"
   }
 }

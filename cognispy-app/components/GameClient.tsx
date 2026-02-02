@@ -10,7 +10,7 @@ import { GameType, GameState } from '@/types';
 import { initGame, createInitialGameState } from '@/lib/game-logic';
 import { playCorrectSound, playWrongSound, playSuccessSound } from '@/lib/sounds';
 
-const validGameTypes: GameType[] = ['numbers', 'weather', 'house', 'transport', 'emotion', 'fruits'];
+const validGameTypes: GameType[] = ['numbers', 'weather', 'house', 'transport', 'emotion', 'fruits', 'winter'];
 
 export default function GameClient() {
   const t = useTranslations();

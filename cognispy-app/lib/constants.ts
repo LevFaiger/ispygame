@@ -75,6 +75,30 @@ export function getRandomFruitDistractor(exclude: string): string {
   return available[Math.floor(Math.random() * available.length)];
 }
 
+// Winter clothes for the winter game
+export const WINTER_STAGES = [
+  { symbol: '🧣', name: 'Scarf' },
+  { symbol: '🧤', name: 'Gloves' },
+  { symbol: '🧥', name: 'Coat' },
+  { symbol: '👢', name: 'Boots' },
+  { symbol: '🎿', name: 'Skis' },
+  { symbol: '⛸️', name: 'Ice Skates' },
+  { symbol: '🧶', name: 'Yarn' },
+  { symbol: '👒', name: 'Hat' },
+  { symbol: '🥾', name: 'Hiking Boot' },
+  { symbol: '☃️', name: 'Snowman' },
+];
+
+export const WINTER_DISTRACTORS = [
+  '🧣', '🧤', '🧥', '👢', '🎿', '⛸️', '🧶', '👒', '🥾', '☃️',
+  '❄️', '🌨️', '⛷️', '🏂', '🛷', '🏔️', '🎄', '🦌', '⭐', '🔔',
+];
+
+export function getRandomWinterDistractor(exclude: string): string {
+  const available = WINTER_DISTRACTORS.filter(e => e !== exclude);
+  return available[Math.floor(Math.random() * available.length)];
+}
+
 export const HOUSE_DOORS: HouseConfig['door'][] = ['left', 'center', 'right', 'none'];
 export const HOUSE_WINDOWS: HouseConfig['windows'][] = ['single', 'double', 'wide', 'split'];
 

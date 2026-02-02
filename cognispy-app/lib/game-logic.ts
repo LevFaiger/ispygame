@@ -5,11 +5,13 @@ import {
   TRANSPORT_TYPES,
   EMOTION_STAGES,
   FRUIT_STAGES,
+  WINTER_STAGES,
   generateRandomHouseConfig,
   houseConfigsMatch,
   getRandomDistractorEmoji,
   getRandomEmotionDistractor,
   getRandomFruitDistractor,
+  getRandomWinterDistractor,
 } from './constants';
 
 function generateUniqueId(): string {
@@ -366,6 +368,48 @@ export function initFruitsGame(stage: number): Partial<GameState> {
   };
 }
 
+export function initWinterGame(stage: number): Partial<GameState> {
+  const stageIndex = Math.min(stage - 1, WINTER_STAGES.length - 1);
+  const targetSymbol = WINTER_STAGES[stageIndex].symbol;
+  const circles: CircleItem[] = [];
+
+  const cols = 5;
+  const rows = 4 + Math.floor(stage / 3);
+  const targetCount = 5 + stage;
+
+  const positions = generateGridPositions(cols, rows, 10, 4);
+  const totalItems = Math.min(positions.length, 20 + stage * 2);
+
+  for (let i = 0; i < totalItems; i++) {
+    const isTarget = i < targetCount;
+    const value = isTarget ? targetSymbol : getRandomWinterDistractor(targetSymbol);
+    const pos = positions[i];
+
+    circles.push({
+      id: generateUniqueId(),
+      value,
+      isTarget,
+      isFound: false,
+      x: pos.x,
+      y: pos.y,
+      rotation: (Math.random() - 0.5) * 15,
+      zIndex: 1,
+    });
+  }
+
+  return {
+    gameType: 'winter',
+    currentStage: stage,
+    circles,
+    foundCount: 0,
+    totalTargetCount: targetCount,
+    targetValue: targetSymbol,
+    isGameActive: true,
+    startTime: Date.now(),
+    score: 0,
+  };
+}
+
 export function initGame(type: GameType, stage: number): Partial<GameState> {
   switch (type) {
     case 'numbers':
@@ -380,6 +424,8 @@ export function initGame(type: GameType, stage: number): Partial<GameState> {
       return initEmotionGame(stage);
     case 'fruits':
       return initFruitsGame(stage);
+    case 'winter':
+      return initWinterGame(stage);
     default:
       return createInitialGameState();
   }
