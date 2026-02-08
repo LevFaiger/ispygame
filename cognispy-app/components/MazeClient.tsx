@@ -40,7 +40,7 @@ function initKeysGame(stage: number): MazeGame {
   const numItems = Math.min(3 + Math.floor(stage / 2), 5);
 
   // Create connections (each start connects to exactly one end)
-  const endIndices = shuffleArray([...Array(numItems).keys()]);
+  const endIndices = shuffleArray(Array.from({ length: numItems }, (_, i) => i));
 
   const lines: MazeLine[] = [];
   for (let i = 0; i < numItems; i++) {
@@ -70,7 +70,7 @@ function initThreadsGame(stage: number): MazeGame {
   const spools = ['🧵', '🪡', '🎀', '🧶', '🪢'];
   const balls = ['🔴', '🔵', '🟢', '🟠', '🟣'];
 
-  const endIndices = shuffleArray([...Array(numItems).keys()]);
+  const endIndices = shuffleArray(Array.from({ length: numItems }, (_, i) => i));
 
   const lines: MazeLine[] = [];
   for (let i = 0; i < numItems; i++) {
