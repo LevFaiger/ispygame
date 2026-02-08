@@ -1,5 +1,25 @@
-// Game types
+// Main category types
+export type MainCategory = 'ispy' | 'finddiff' | 'trace' | 'maze';
+
+// Game types (sub-categories under I Spy)
 export type GameType = 'numbers' | 'weather' | 'house' | 'transport' | 'emotion' | 'fruits' | 'winter';
+
+// Find Diff game types
+export type FindDiffGameType = 'shoes' | 'bears';
+
+// Maze game types
+export type MazeGameType = 'keys' | 'threads';
+
+// Trace game types
+export type TraceGameType = 'arrows' | 'shapes';
+
+// Main category data
+export interface MainCategoryData {
+  id: MainCategory;
+  character: string;
+  emoji: string;
+  color: string;
+}
 
 // Transport vehicle types
 export type TransportType = 'car' | 'bus' | 'plane' | 'bike' | 'train' | 'boat';

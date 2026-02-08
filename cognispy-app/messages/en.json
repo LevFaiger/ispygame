@@ -9,6 +9,33 @@
     "button": "Let's Play",
     "switchUser": "Switch"
   },
+  "mainCategories": {
+    "title": "Choose Game Type",
+    "ispy": {
+      "name": "I Spy",
+      "subtitle": "Focus & Attention",
+      "character": "Detective Grandpa",
+      "keyword": "Look"
+    },
+    "finddiff": {
+      "name": "Find Differences",
+      "subtitle": "Spot the Difference",
+      "character": "Observer Grandma",
+      "keyword": "Compare"
+    },
+    "trace": {
+      "name": "Trace the Dots",
+      "subtitle": "Connect & Draw",
+      "character": "Careful Grandma",
+      "keyword": "Calm"
+    },
+    "maze": {
+      "name": "Mazes",
+      "subtitle": "Find the Path",
+      "character": "Explorer Grandpa",
+      "keyword": "Navigate"
+    }
+  },
   "categories": {
     "title": "Choose an Activity",
     "numbers": {
@@ -80,5 +107,38 @@
     "emotion": "Emotion Stage",
     "fruits": "Fruit Stage",
     "winter": "Winter Stage"
+  },
+  "finddiff": {
+    "shoes": {
+      "name": "Shoes",
+      "description": "Find the matching pair of shoes."
+    },
+    "bears": {
+      "name": "Bears",
+      "description": "Find differences between pictures."
+    },
+    "success": "You found all the differences!"
+  },
+  "maze": {
+    "keys": {
+      "name": "Keys",
+      "description": "Find which key opens the lock."
+    },
+    "threads": {
+      "name": "Threads",
+      "description": "Follow where the thread leads."
+    },
+    "success": "You found the correct path!"
+  },
+  "trace": {
+    "arrows": {
+      "name": "Arrows",
+      "description": "Copy the arrow pattern on dots."
+    },
+    "shapes": {
+      "name": "Shapes",
+      "description": "Copy the geometric shape."
+    },
+    "success": "Great! The pattern matches!"
   }
 }
