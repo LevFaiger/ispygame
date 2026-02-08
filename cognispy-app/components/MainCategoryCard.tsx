@@ -5,7 +5,7 @@ import { MainCategory } from '@/types';
 interface MainCategoryCardProps {
   category: MainCategory;
   name: string;
-  subtitle: string;
+  subtitle?: string; // Optional, not displayed in 70+ UX
   character: string;
   keyword: string;
   onClick: () => void;
@@ -39,7 +39,6 @@ const categoryStyles: Record<MainCategory, { icon: string; bgColor: string; hove
 export default function MainCategoryCard({
   category,
   name,
-  subtitle,
   character,
   keyword,
   onClick,
